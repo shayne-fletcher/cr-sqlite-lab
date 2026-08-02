@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./images/logo.jpeg" width="300" alt="cr-sqlite-lab logo">
+</p>
+
 <h1 align="center">cr-sqlite-lab</h1>
 
 <p align="center">
@@ -11,14 +15,21 @@
   <a href="https://shayne-fletcher.github.io/cr-sqlite-lab/">
     <img src="https://img.shields.io/badge/docs-github.io-blue" alt="docs">
   </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-BSD--3--Clause-blue" alt="BSD-3-Clause license">
+  </a>
 </p>
 
 A consumer and experiment project for cr-sqlite.
 
-The lab should load a cr-sqlite artifact the way an application would.
-Changes required to build or package the extension belong in the
-adjacent `~/project/cr-sqlite` checkout.
+The current experiment builds the Cargo-native `cr-sqlite` dynamic library as an artifact dependency, loads it into every stock Rust libSQL connection, and proves CRR convergence between two independently written database files.
 
-The first experiment will use stock Rust libSQL to open a local
-database, load the extension from an explicit path, and exercise basic
-CRR operations.
+Alice and Bob each have an application task and a synchronizer task. Each task owns its own connection, and the synchronizers exchange `crsql_changes` batches through bounded channels without accessing one another's database.
+
+Run the experiment with:
+
+```sh
+cargo run --example lab0
+```
+
+A successful run verifies the expected merged rows on both replicas and confirms that continued replay is idempotent.

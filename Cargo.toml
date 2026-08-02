@@ -1,0 +1,18 @@
+[package]
+name = "cr-sqlite-lab"
+version = "0.1.0"
+edition = "2024"
+license = "BSD-3-Clause"
+publish = false
+
+[dependencies]
+anyhow = "1"
+libsql = { version = "0.9.30", default-features = false, features = ["core"] }
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
+
+[dependencies.crsqlite]
+package = "cr-sqlite"
+git = "https://github.com/shayne-fletcher/cr-sqlite.git"
+rev = "d40fe0cb5a2427decf681b590d92e1699a4e529a"
+artifact = "cdylib"

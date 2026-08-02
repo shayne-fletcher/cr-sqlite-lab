@@ -15,23 +15,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check:
-    name: Repository checks
-    runs-on: ubuntu-latest
+  experiment:
+    name: Experiment (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out source
         uses: actions/checkout@v7
 
-      - name: Check repository
-        run: |
-          git diff-tree --check --root -r HEAD
-          test -f README.md
-          test -f rust-toolchain
-          test -f doc/index.html
+      - name: Install the pinned Rust toolchain
+        run: rustup show
+
+      - name: Build the experiment
+        run: cargo build --example lab0
+
+      - name: Run the experiment
+        run: cargo run --example lab0
 
   pages:
     name: Publish GitHub Pages
-    needs: check
+    needs: experiment
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
