@@ -1,2 +1,2 @@
 *.rs linguist-language=Rust
-examples/**/*.rs linguist-detectable=true
+examples/**/*.rs -linguist-documentation
